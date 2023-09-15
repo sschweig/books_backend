@@ -9,6 +9,7 @@ import requests
 import typing
 import urllib
 from fastapi import FastAPI
+from fastapi.encoders import jsonable_encoder
 from dotenv import load_dotenv
 #from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware import Middleware
@@ -81,10 +82,10 @@ def search(keywords):
             'uid': idx,
             'book_id': el['id'],
             'title': el['volumeInfo'].get('title', ''),
-            'authors': el['volumeInfo'].get('authors', []),
+            'authors': ", ".join(el['volumeInfo'].get('authors', [])),
             'imagePreview': el['volumeInfo']['imageLinks'].get('smallThumbnail', ''),
-            'description': el['searchInfo'].get('textSnippet', '')
+            'description': el.get('searchInfo', {}).get('textSnippet', '')
             } for idx, el in enumerate(r.json()['items'])]
             
-        return {'books': filtered}
+        return jsonable_encoder(filtered)
     return r.json()
