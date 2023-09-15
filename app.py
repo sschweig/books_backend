@@ -66,11 +66,11 @@ def home():
     return {"message": "Hello World"}
 
 @app.get("/details/{uid}")
-def search(uid):
+def search(uid: int) -> requests.models.Response:
     return jsonable_encoder(LIB_CACHE[uid])
 
 @app.get("/results/{keywords}")
-def search(keywords):
+def search(keywords: str) -> requests.models.Response:
     params = {"key":BOOKS_API_KEY}
     url = search_url_builder(keywords)
     r = requests.get(url, params=params)
