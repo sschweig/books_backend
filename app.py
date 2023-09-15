@@ -24,20 +24,8 @@ BOOKS_API_KEY = os.getenv('BOOKS_API_KEY')
 
 LIB_CACHE = []
 
-origins = [
-    "*",
-    "localhost", 
-    "localhost:3000", 
-    "http://localhost", 
-    "http://localhost:3000"
-    "https://localhost", 
-    "https://localhost:3000",
-    "http://0.0.0.0",
-    "http://0.0.0.0/results/*",
-    "http://localhost:80"
-]
 middleware = [
-    Middleware(CORSMiddleware, allow_origins=origins)
+    Middleware(CORSMiddleware, allow_origins=['*'])
 ]
 
 app = FastAPI(middleware=middleware)
@@ -76,6 +64,10 @@ def search_url_builder(keywords: str) -> str:
 @app.get("/")
 def home():
     return {"message": "Hello World"}
+
+@app.get("/details/{uid}")
+def search(uid):
+    return jsonable_encoder(LIB_CACHE[uid])
 
 @app.get("/results/{keywords}")
 def search(keywords):
