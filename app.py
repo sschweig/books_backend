@@ -17,7 +17,11 @@ from starlette.middleware.cors import CORSMiddleware
 
 #.env handling
 load_dotenv()
+
+#Replace me 
 BOOKS_API_KEY = os.getenv('BOOKS_API_KEY')
+#BOOKS_API_KEY = "API KEY HERE"
+
 LIB_CACHE = []
 
 origins = [

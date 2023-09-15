@@ -5,7 +5,8 @@ books by keyword.
 
 ## Getting Started
 
-First, run the development server by executing the following command from the 
+First, uncomment line 23 and comment out line 22, then insert your own Books API Key. 
+After that, run the development server by executing the following command from the 
 same folder as main.py:
 
 ```
