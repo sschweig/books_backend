@@ -18,6 +18,7 @@ from starlette.middleware.cors import CORSMiddleware
 #.env handling
 load_dotenv()
 BOOKS_API_KEY = os.getenv('BOOKS_API_KEY')
+LIB_CACHE = []
 
 origins = [
     "*",
@@ -68,22 +69,23 @@ def search_url_builder(keywords: str) -> str:
         "q": keywords.replace(" ", "+")
         })
 
-@app.get("/")
-async def root() -> dict:
-    return {"message": "Hello World"}
-
 @app.get("/results/{keywords}")
 def search(keywords):
     params = {"key":BOOKS_API_KEY}
     url = search_url_builder(keywords)
     r = requests.get(url, params=params)
+    
     if r.status_code == 200:
+        LIB_CACHE = r.json()
         filtered = [{
             'uid': idx,
             'book_id': el['id'],
             'title': el['volumeInfo'].get('title', ''),
             'authors': ", ".join(el['volumeInfo'].get('authors', [])),
-            'imagePreview': el['volumeInfo']['imageLinks'].get('smallThumbnail', ''),
+            'imagePreview': el['volumeInfo'].get('imageLinks', {}).get('smallThumbnail', ''),
+            'publishedDate': el['volumeInfo'].get('publishedDate', ''),
+            'averageRating': el['volumeInfo'].get('averageRating', 0),
+            'ratingsCount': el['volumeInfo'].get('ratingsCount', 0),
             'description': el.get('searchInfo', {}).get('textSnippet', '')
             } for idx, el in enumerate(r.json()['items'])]
             
