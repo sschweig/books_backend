@@ -1,6 +1,6 @@
 # My Library
 This is a demonstration of Google's Books API. This is a simple backend designed
-to allow a user to interact with the API's search finctionality and browse for 
+to allow a user to interact with the API's search functionality and browse for 
 books by keyword.
 
 ## Getting Started
