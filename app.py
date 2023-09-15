@@ -69,6 +69,10 @@ def search_url_builder(keywords: str) -> str:
         "q": keywords.replace(" ", "+")
         })
 
+@app.get("/")
+def home():
+    return {"message": "Hello World"}
+
 @app.get("/results/{keywords}")
 def search(keywords):
     params = {"key":BOOKS_API_KEY}
